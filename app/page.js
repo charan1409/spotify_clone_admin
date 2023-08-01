@@ -14,6 +14,15 @@ export default function Home() {
   const [imageURL, setImageURL] = useState("");
   const [file, setFile] = useState("");
 
+  function convertDriveLinkToEmbedLink(originalLink) {
+    const fileId = originalLink.match(/\/file\/d\/([^/]+)/);
+    if (fileId && fileId[1]) {
+      const embedLink = `https://drive.google.com/uc?id=${fileId[1]}`;
+      return embedLink;
+    }
+    return null;
+  }
+
   const onSubmitHandler = async (event) => {
     event.preventDefault();
     const formData = new FormData();
@@ -143,7 +152,7 @@ export default function Home() {
                 name="file"
                 value={file}
                 onChange={(e) => {
-                  setFile(e.target.value);
+                  setFile(convertDriveLinkToEmbedLink(e.target.value));
                 }}
                 placeholder="paste the link of the audio file"
               />
